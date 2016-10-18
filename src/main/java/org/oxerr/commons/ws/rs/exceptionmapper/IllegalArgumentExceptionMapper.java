@@ -5,6 +5,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * Maps {@link IllegalArgumentException} to {@link Response}.
+ */
 @Provider
 @Singleton
 public class IllegalArgumentExceptionMapper
