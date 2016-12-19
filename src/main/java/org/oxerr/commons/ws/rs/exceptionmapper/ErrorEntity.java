@@ -2,6 +2,9 @@ package org.oxerr.commons.ws.rs.exceptionmapper;
 
 import java.io.Serializable;
 
+/**
+ * Response entity for exceptions.
+ */
 public class ErrorEntity implements Serializable {
 
 	private static final long serialVersionUID = 2016101501L;

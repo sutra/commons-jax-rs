@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.oxerr.commons</groupId>
 	<artifactId>commons-jax-rs</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>commons-jax-rs</name>
 	<description>Utility classes for JAX-RS.</description>
 	<url>https://oxerr.org/commons-jax-rs</url>
@@ -15,7 +15,7 @@
 	<licenses>
 		<license>
 			<name>The BSD 2-Clause License</name>
-			<url>http://opensource.org/licenses/bsd-license.php</url>
+			<url>https://opensource.org/licenses/bsd-license.php</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
