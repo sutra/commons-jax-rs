@@ -7,14 +7,21 @@ import java.io.Serializable;
  */
 public class ErrorEntity implements Serializable {
 
-	private static final long serialVersionUID = 2016101501L;
+	private static final long serialVersionUID = 2016123001L;
 
 	private Integer code;
 	private String message;
+	private Throwable exception;
 
 	public ErrorEntity(Integer code, String message) {
 		this.code = code;
 		this.message = message;
+	}
+
+	public ErrorEntity(Integer code, String message, Throwable exception) {
+		this.code = code;
+		this.message = message;
+		this.exception = exception;
 	}
 
 	public Integer getCode() {
@@ -31,6 +38,14 @@ public class ErrorEntity implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Throwable getException() {
+		return exception;
+	}
+
+	public void setException(Throwable exception) {
+		this.exception = exception;
 	}
 
 }
