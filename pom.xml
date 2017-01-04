@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.oxerr.commons</groupId>
 	<artifactId>commons-jax-rs</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>commons-jax-rs</name>
 	<description>Utility classes for JAX-RS.</description>
 	<url>https://oxerr.org/commons-jax-rs</url>
@@ -192,6 +192,11 @@
 				<artifactId>jackson-datatype-jsr310</artifactId>
 				<version>2.6.6</version>
 			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<scm>
@@ -308,6 +313,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
