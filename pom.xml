@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.oxerr.commons</groupId>
 	<artifactId>commons-jax-rs</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<name>commons-jax-rs</name>
 	<description>Utility classes for JAX-RS.</description>
 	<url>https://oxerr.org/commons-jax-rs</url>
