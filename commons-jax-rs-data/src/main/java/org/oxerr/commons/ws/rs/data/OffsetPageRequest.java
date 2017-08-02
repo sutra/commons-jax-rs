@@ -1,4 +1,4 @@
-package org.oxerr.commons.ws.rs;
+package org.oxerr.commons.ws.rs.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
  */
 public class OffsetPageRequest implements Pageable, Serializable {
 
-	private static final long serialVersionUID = 2016100901L;
+	private static final long serialVersionUID = 2017071101L;
 
 	private static final int MAX_LIMIT = 500;
 	private static final int DEFAULT_LIMIT = 10;
