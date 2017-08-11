@@ -18,9 +18,9 @@ public final class BeanUtils {
 	private BeanUtils() {
 	}
 
-	public static void patch(Object dest, Object orig) {
+	public static <T> T patch(T dest, Object orig) {
 		if (dest == null || orig == null) {
-			return;
+			return dest;
 		}
 
 		try {
@@ -28,9 +28,11 @@ public final class BeanUtils {
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
+
+		return dest;
 	}
 
-	public static void patch(Object dest, Object orig, String... properties) {
+	public static <T> T patch(T dest, Object orig, String... properties) {
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
 
@@ -40,9 +42,11 @@ public final class BeanUtils {
 				destBeanWrapper.setPropertyValue(property, value);
 			}
 		}
+
+		return dest;
 	}
 
-	public static void patchExclude(Object dest, Object orig,
+	public static <T> T patchExclude(T dest, Object orig,
 			String... excludedProperties) {
 		final List<String> excludedPropertyList = Arrays.asList(excludedProperties);
 
@@ -57,9 +61,11 @@ public final class BeanUtils {
 				}
 			}
 		}
+
+		return dest;
 	}
 
-	public static void patchExclude(Object dest, Object orig,
+	public static <T> T patchExclude(T dest, Object orig,
 			Set<Class<? extends Annotation>> excludedAnnotationTypes) {
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
@@ -88,24 +94,28 @@ public final class BeanUtils {
 				}
 			}
 		}
+
+		return dest;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void patchExclude(Object dest, Object orig,
+	public static <T> T patchExclude(T dest, Object orig,
 			Class<?>... excludedAnnotationTypes) {
 		patchExclude(dest, orig,
 			Arrays.asList(excludedAnnotationTypes).stream()
 				.map(e -> (Class<? extends Annotation>) e)
 				.collect(Collectors.toSet()));
+		return dest;
 	}
 
-	public static void copyProperties(Object dest, Object orig, String... properties) {
+	public static <T> T copyProperties(T dest, Object orig, String... properties) {
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
 		for (final String property : properties) {
 			final Object value = origBeanWrapper.getPropertyValue(property);
 			destBeanWrapper.setPropertyValue(property, value);
 		}
+		return dest;
 	}
 
 }
