@@ -8,10 +8,10 @@ package org.oxerr.commons.ws.rs.bean;
 public interface Patchable<T> {
 
 	/**
-	 * Returns the patched object, for method chaining.
+	 * Patch this bean with the specified bean.
 	 *
 	 * @param t the patching object.
-	 * @return the patched object.
+	 * @return the patched object, used to chain calls.
 	 */
 	T patch(T t);
 
