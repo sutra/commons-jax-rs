@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.oxerr.commons</groupId>
 		<artifactId>commons-jax-rs</artifactId>
-		<version>1.3.0</version>
+		<version>1.4.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>commons-jax-rs-data</artifactId>
 	<name>commons-jax-rs-data</name>
