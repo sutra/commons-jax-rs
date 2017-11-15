@@ -196,4 +196,35 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + limit;
+		result = prime * result + offset;
+		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OffsetPageRequest other = (OffsetPageRequest) obj;
+		if (limit != other.limit)
+			return false;
+		if (offset != other.offset)
+			return false;
+		if (sort == null) {
+			if (other.sort != null)
+				return false;
+		} else if (!sort.equals(other.sort))
+			return false;
+		return true;
+	}
+
 }
