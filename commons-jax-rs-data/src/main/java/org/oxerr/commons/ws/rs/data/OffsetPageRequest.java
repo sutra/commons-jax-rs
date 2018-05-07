@@ -49,7 +49,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		if (sort != null && sort.iterator().hasNext()) {
 			ret = this;
 		} else {
-			ret = new PageRequest(getPageNumber(), getPageSize(), direction, properties);
+			ret = PageRequest.of(getPageNumber(), getPageSize(), direction, properties);
 		}
 		return ret;
 	}
@@ -110,7 +110,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getOffset() {
+	public long getOffset() {
 		return offset;
 	}
 
@@ -164,7 +164,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 			}
 
 			final String[] elements = part.split(DEFAULT_PROPERTY_DELIMITER);
-			final Direction direction = elements.length == 0 ? null : Direction.fromStringOrNull(elements[elements.length - 1]);
+			final Direction direction = elements.length == 0 ? null : Direction.fromOptionalString(elements[elements.length - 1]).orElse(null);
 
 			for (int i = 0; i < elements.length; i++) {
 
@@ -187,7 +187,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	private static Sort parseSort(List<String> sorts) {
 		final List<Order> orders = parseOrders(sorts);
-		return orders.isEmpty() ? null : new Sort(orders);
+		return orders.isEmpty() ? null : Sort.by(orders);
 	}
 
 	private void check(int limit) {
