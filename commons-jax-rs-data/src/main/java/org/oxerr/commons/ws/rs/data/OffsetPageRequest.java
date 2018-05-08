@@ -49,7 +49,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		if (sort != null && sort.iterator().hasNext()) {
 			ret = this;
 		} else {
-			ret = new PageRequest(getPageNumber(), getPageSize(), direction, properties);
+			ret = PageRequest.of(getPageNumber(), getPageSize(), direction, properties);
 		}
 		return ret;
 	}
@@ -110,7 +110,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getOffset() {
+	public long getOffset() {
 		return offset;
 	}
 
@@ -164,7 +164,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 			}
 
 			final String[] elements = part.split(DEFAULT_PROPERTY_DELIMITER);
-			final Direction direction = elements.length == 0 ? null : Direction.fromStringOrNull(elements[elements.length - 1]);
+			final Direction direction = elements.length == 0 ? null : Direction.fromOptionalString(elements[elements.length - 1]).orElse(null);
 
 			for (int i = 0; i < elements.length; i++) {
 
@@ -187,13 +187,44 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	private static Sort parseSort(List<String> sorts) {
 		final List<Order> orders = parseOrders(sorts);
-		return orders.isEmpty() ? null : new Sort(orders);
+		return orders.isEmpty() ? null : Sort.by(orders);
 	}
 
 	private void check(int limit) {
 		if (limit > MAX_LIMIT) {
 			throw new IllegalArgumentException("Limit is exceeded.");
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + limit;
+		result = prime * result + offset;
+		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OffsetPageRequest other = (OffsetPageRequest) obj;
+		if (limit != other.limit)
+			return false;
+		if (offset != other.offset)
+			return false;
+		if (sort == null) {
+			if (other.sort != null)
+				return false;
+		} else if (!sort.equals(other.sort))
+			return false;
+		return true;
 	}
 
 }
