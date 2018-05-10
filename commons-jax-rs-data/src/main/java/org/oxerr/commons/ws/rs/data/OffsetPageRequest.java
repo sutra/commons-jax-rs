@@ -27,14 +27,14 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	private static final String DEFAULT_PROPERTY_DELIMITER = ",";
 
 	private int limit;
-	private int offset;
+	private long offset;
 	private Sort sort;
 
 	public OffsetPageRequest() {
 		this.limit = DEFAULT_LIMIT;
 	}
 
-	public OffsetPageRequest(int limit, int offset, Sort sort) {
+	public OffsetPageRequest(int limit, long offset, Sort sort) {
 		this.check(limit);
 
 		this.limit = limit;
@@ -74,7 +74,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@QueryParam("offset")
 	@DefaultValue("0")
-	public void setOffset(int offset) {
+	public void setOffset(long offset) {
 		this.offset = offset;
 	}
 
@@ -95,7 +95,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public int getPageNumber() {
-		return limit > 0 ? offset / limit : 0;
+		return (int) (limit > 0 ? offset / limit : 0);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public Sort getSort() {
-		return sort;
+		return sort != null ? sort : Sort.unsorted();
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public Pageable next() {
-		return new OffsetPageRequest(limit + offset, offset, sort);
+		return new OffsetPageRequest(limit, offset + limit, sort);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + limit;
-		result = prime * result + offset;
+		result = prime * result + Long.hashCode(offset);
 		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
 		return result;
 	}
