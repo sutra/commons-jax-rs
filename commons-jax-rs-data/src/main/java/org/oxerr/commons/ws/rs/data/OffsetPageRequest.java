@@ -127,7 +127,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public Pageable next() {
-		return new OffsetPageRequest(limit + offset, offset, sort);
+		return new OffsetPageRequest(limit, offset + limit, sort);
 	}
 
 	/**
