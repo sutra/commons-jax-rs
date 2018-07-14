@@ -13,9 +13,12 @@ import javax.ws.rs.ext.Provider;
 /**
  * {@code ParamConverterProvider} for converting between a {@code String} and
  * {@link OffsetDateTime}.
+ *
+ * @deprecated Use org.apache.cxf.jaxrs.provider.JavaTimeTypesParamConverterProvider instead.
  */
 @Provider
 @Singleton
+@Deprecated
 public class OffsetDateTimeProvider implements ParamConverterProvider {
 
 	private final ZoneOffset offset;

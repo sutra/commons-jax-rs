@@ -33,6 +33,10 @@ public final class BeanUtils {
 	}
 
 	public static <T> T patch(T dest, Object orig, String... properties) {
+		if (dest == null || orig == null) {
+			return dest;
+		}
+
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
 
@@ -48,6 +52,10 @@ public final class BeanUtils {
 
 	public static <T> T patchExclude(T dest, Object orig,
 			String... excludedProperties) {
+		if (dest == null || orig == null) {
+			return dest;
+		}
+
 		final List<String> excludedPropertyList = Arrays.asList(excludedProperties);
 
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
@@ -67,6 +75,10 @@ public final class BeanUtils {
 
 	public static <T> T patchExclude(T dest, Object orig,
 			Set<Class<? extends Annotation>> excludedAnnotationTypes) {
+		if (dest == null || orig == null) {
+			return dest;
+		}
+
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
 
@@ -109,6 +121,10 @@ public final class BeanUtils {
 	}
 
 	public static <T> T copyProperties(T dest, Object orig, String... properties) {
+		if (dest == null || orig == null) {
+			return dest;
+		}
+
 		final BeanWrapper destBeanWrapper = new BeanWrapperImpl(dest);
 		final BeanWrapper origBeanWrapper = new BeanWrapperImpl(orig);
 		for (final String property : properties) {
