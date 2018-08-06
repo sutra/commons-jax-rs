@@ -13,6 +13,9 @@ public class ErrorEntity implements Serializable {
 	private String message;
 	private Throwable exception;
 
+	public ErrorEntity() {
+	}
+
 	public ErrorEntity(Integer code, String message) {
 		this.code = code;
 		this.message = message;
