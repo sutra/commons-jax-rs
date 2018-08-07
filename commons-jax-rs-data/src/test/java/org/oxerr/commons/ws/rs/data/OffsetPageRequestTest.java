@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 public class OffsetPageRequestTest {
 
@@ -29,6 +30,14 @@ public class OffsetPageRequestTest {
 		assertEquals(1, next.getPageNumber());
 		assertEquals(10, next.getPageSize());
 		assertEquals(10, next.getOffset());
+	}
+
+	@Test
+	public void defaultSort() {
+		OffsetPageRequest opr = new OffsetPageRequest(5, 1, null);
+		assertEquals(1L, opr.getOffset());
+		Pageable p = opr.defaultSort(Direction.DESC, "createdDate");
+		assertEquals(1L, p.getOffset());
 	}
 
 }
