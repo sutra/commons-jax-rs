@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -42,15 +41,16 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		this.sort = sort;
 	}
 
-	public Pageable defaultSort(Direction direction, String... properties) {
-		final Pageable ret;
+	public OffsetPageRequest defaultSort(Direction direction, String... properties) {
+		final OffsetPageRequest ret;
 		final Sort sort = getSort();
 
 		if (sort != null && sort.iterator().hasNext()) {
 			ret = this;
 		} else {
-			ret = PageRequest.of(getPageNumber(), getPageSize(), direction, properties);
+			ret = new OffsetPageRequest(getPageSize(), getOffset(), Sort.by(direction, properties));
 		}
+
 		return ret;
 	}
 
