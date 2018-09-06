@@ -18,7 +18,7 @@ public class IllegalStateExceptionMapper
 	 */
 	@Override
 	public Response toResponse(IllegalStateException exception) {
-		return Response.status(Response.Status.BAD_REQUEST)
+		return Response.status(Response.Status.CONFLICT)
 			.entity(new ErrorEntity(null, exception.getMessage()))
 			.build();
 	}
