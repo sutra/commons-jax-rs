@@ -10,9 +10,10 @@ public interface Patchable<T> {
 	/**
 	 * Patch this bean with the specified bean.
 	 *
+	 * @param <S> the type of patching object.
 	 * @param t the patching object.
 	 * @return the patched object, used to chain calls.
 	 */
-	T patch(T t);
+	<S extends T> T patch(S t);
 
 }
