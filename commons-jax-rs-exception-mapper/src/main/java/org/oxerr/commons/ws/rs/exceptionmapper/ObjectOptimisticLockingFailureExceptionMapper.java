@@ -13,7 +13,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 @Provider
 @Singleton
 public class ObjectOptimisticLockingFailureExceptionMapper
-		implements ExceptionMapper<ObjectOptimisticLockingFailureException> {
+	implements ExceptionMapper<ObjectOptimisticLockingFailureException> {
 
 	@Override
 	public Response toResponse(ObjectOptimisticLockingFailureException exception) {
