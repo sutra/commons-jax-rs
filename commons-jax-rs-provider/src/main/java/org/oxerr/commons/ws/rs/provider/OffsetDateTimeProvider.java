@@ -23,6 +23,13 @@ public class OffsetDateTimeProvider implements ParamConverterProvider {
 
 	private final ZoneOffset offset;
 
+	/**
+	 * @since 2.3.1
+	 */
+	public OffsetDateTimeProvider() {
+		this(ZoneOffset.UTC);
+	}
+
 	public OffsetDateTimeProvider(ZoneOffset offset) {
 		this.offset = offset;
 	}
