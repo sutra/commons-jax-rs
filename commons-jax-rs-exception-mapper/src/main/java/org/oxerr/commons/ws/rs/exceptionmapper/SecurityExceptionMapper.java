@@ -11,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Singleton
 public class SecurityExceptionMapper
-		implements ExceptionMapper<SecurityException> {
+	implements ExceptionMapper<SecurityException> {
 
 	/**
 	 * {@inheritDoc}

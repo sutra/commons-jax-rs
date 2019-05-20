@@ -11,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Singleton
 public class IllegalArgumentExceptionMapper
-		implements ExceptionMapper<IllegalArgumentException> {
+	implements ExceptionMapper<IllegalArgumentException> {
 
 	/**
 	 * {@inheritDoc}
