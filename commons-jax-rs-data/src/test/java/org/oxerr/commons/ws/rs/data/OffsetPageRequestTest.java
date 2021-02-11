@@ -1,17 +1,17 @@
 package org.oxerr.commons.ws.rs.data;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
-public class OffsetPageRequestTest {
+class OffsetPageRequestTest {
 
 	@Test
-	public void testGetSort() {
+	void testGetSort() {
 		PageRequest pr = PageRequest.of(0, 10);
 		assertEquals(Sort.unsorted(), pr.getSort());
 
@@ -20,7 +20,7 @@ public class OffsetPageRequestTest {
 	}
 
 	@Test
-	public void testNext() {
+	void testNext() {
 		Pageable p = new OffsetPageRequest();
 		assertEquals(0, p.getPageNumber());
 		assertEquals(10, p.getPageSize());
@@ -33,7 +33,7 @@ public class OffsetPageRequestTest {
 	}
 
 	@Test
-	public void defaultSort() {
+	void defaultSort() {
 		OffsetPageRequest opr = new OffsetPageRequest(5, 1, null);
 		assertEquals(1L, opr.getOffset());
 		Pageable p = opr.defaultSort(Direction.DESC, "createdDate");
