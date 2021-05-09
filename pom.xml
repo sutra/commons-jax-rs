@@ -120,6 +120,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>3.0.0-M1</version>
 				</plugin>
@@ -170,6 +175,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${surefire.version}</version>
 				</plugin>
@@ -192,6 +202,11 @@
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>0.8.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.8</version>
 				</plugin>
 				<plugin>
 					<groupId>com.amashchenko.maven.plugin</groupId>
@@ -352,25 +367,6 @@
 						</configuration>
 					</plugin>
 				</plugins>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-gpg-plugin</artifactId>
-							<version>1.6</version>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-source-plugin</artifactId>
-							<version>3.2.1</version>
-						</plugin>
-						<plugin>
-							<groupId>org.sonatype.plugins</groupId>
-							<artifactId>nexus-staging-maven-plugin</artifactId>
-							<version>1.6.8</version>
-						</plugin>
-					</plugins>
-				</pluginManagement>
 			</build>
 		</profile>
 	</profiles>
