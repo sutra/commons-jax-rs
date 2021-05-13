@@ -18,6 +18,18 @@ import org.springframework.util.StringUtils;
  */
 public class OffsetPageRequest implements Pageable, Serializable {
 
+	public static OffsetPageRequest of() {
+		return new OffsetPageRequest();
+	}
+
+	public static OffsetPageRequest of(int limit, long offset) {
+		return new OffsetPageRequest(limit, offset);
+	}
+
+	public static OffsetPageRequest of(int limit, long offset, Sort sort) {
+		return new OffsetPageRequest(limit, offset, sort);
+	}
+
 	private static final long serialVersionUID = 2017071101L;
 
 	private static final int MAX_LIMIT = 500;
@@ -31,6 +43,10 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	public OffsetPageRequest() {
 		this.limit = DEFAULT_LIMIT;
+	}
+
+	public OffsetPageRequest(int limit, long offset) {
+		this(limit, offset, null);
 	}
 
 	public OffsetPageRequest(int limit, long offset, Sort sort) {
