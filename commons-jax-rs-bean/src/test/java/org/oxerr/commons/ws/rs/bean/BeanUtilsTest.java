@@ -1,6 +1,6 @@
 package org.oxerr.commons.ws.rs.bean;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -8,12 +8,12 @@ import java.util.Set;
 
 import javax.persistence.Version;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class BeanUtilsTest {
+class BeanUtilsTest {
 
 	@Test
-	public void testPatchExclude() {
+	void testPatchExclude() {
 		VersionedFieldBean bean1 = new VersionedFieldBean("hello", 1);
 		VersionedFieldBean bean2 = new VersionedFieldBean("world", 0);
 
@@ -24,7 +24,7 @@ public class BeanUtilsTest {
 	}
 
 	@Test
-	public void testPatchExcludeAnnotationOnField() {
+	void testPatchExcludeAnnotationOnField() {
 		VersionedFieldBean bean1 = new VersionedFieldBean("hello", 1);
 		VersionedFieldBean bean2 = new VersionedFieldBean("world", 0);
 
@@ -37,7 +37,7 @@ public class BeanUtilsTest {
 	}
 
 	@Test
-	public void testPatchExcludeAnnotationOnGetter() {
+	void testPatchExcludeAnnotationOnGetter() {
 		VersionedGetterBean bean1 = new VersionedGetterBean("hello", 1);
 		VersionedGetterBean bean2 = new VersionedGetterBean("world", 0);
 
@@ -50,7 +50,7 @@ public class BeanUtilsTest {
 	}
 
 	@Test
-	public void testPatchExcludeAnnotation() {
+	void testPatchExcludeAnnotation() {
 		VersionedFieldBean bean1 = new VersionedFieldBean("hello", 1);
 		VersionedFieldBean bean2 = new VersionedFieldBean("world", 0);
 

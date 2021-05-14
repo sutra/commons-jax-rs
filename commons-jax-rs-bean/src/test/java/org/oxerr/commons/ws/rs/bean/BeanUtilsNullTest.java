@@ -1,7 +1,7 @@
 package org.oxerr.commons.ws.rs.bean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -9,38 +9,38 @@ import java.util.Set;
 
 import javax.persistence.Version;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class BeanUtilsNullTest {
+class BeanUtilsNullTest {
 
 	private Bean dest;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		dest = new Bean();
 	}
 
 	@Test
-	public void testPatchTObject() {
+	void testPatchTObject() {
 		assertNull(BeanUtils.patch(null, null));
 		assertEquals(dest, BeanUtils.patch(dest, null));
 	}
 
 	@Test
-	public void testPatchTObjectStringArray() {
+	void testPatchTObjectStringArray() {
 		assertNull(BeanUtils.patch(null, null, "f1"));
 		assertEquals(dest, BeanUtils.patch(dest, null, "f1"));
 	}
 
 	@Test
-	public void testPatchExcludeTObjectStringArray() {
+	void testPatchExcludeTObjectStringArray() {
 		assertNull(BeanUtils.patchExclude(null, null, "f2"));
 		assertEquals(dest, BeanUtils.patchExclude(dest, null, "f2"));
 	}
 
 	@Test
-	public void testPatchExcludeTObjectSetOfClassOfQextendsAnnotation() {
+	void testPatchExcludeTObjectSetOfClassOfQextendsAnnotation() {
 		Set<Class<? extends Annotation>> annotationTypes = new HashSet<>();
 		annotationTypes.add(Version.class);
 
@@ -49,13 +49,13 @@ public class BeanUtilsNullTest {
 	}
 
 	@Test
-	public void testPatchExcludeTObjectClassOfQArray() {
+	void testPatchExcludeTObjectClassOfQArray() {
 		assertNull(BeanUtils.patchExclude(null, null, Version.class));
 		assertEquals(dest, BeanUtils.patchExclude(dest, null, Version.class));
 	}
 
 	@Test
-	public void testCopyProperties() {
+	void testCopyProperties() {
 		assertNull(BeanUtils.copyProperties(null, null, "f1"));
 		assertEquals(dest, BeanUtils.copyProperties(dest, null, "f1"));
 	}
