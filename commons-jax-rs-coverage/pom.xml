@@ -12,6 +12,7 @@
 	</parent>
 
 	<artifactId>commons-jax-rs-coverage</artifactId>
+	<packaging>pom</packaging>
 	<name>commons-jax-rs-coverage</name>
 	<description>Compute aggregated test code coverage</description>
 
