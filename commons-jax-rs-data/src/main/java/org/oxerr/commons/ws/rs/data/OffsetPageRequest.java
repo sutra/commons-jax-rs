@@ -33,8 +33,11 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	private static final long serialVersionUID = 2017071101L;
 
 	private static final int DEFAULT_MAX_LIMIT = 500;
+
 	private static final int DEFAULT_LIMIT = 10;
+
 	private static final String DEFAULT_LIMIT_STRING = "10";
+
 	private static final String DEFAULT_PROPERTY_DELIMITER = ",";
 
 	private int maxLimit = DEFAULT_MAX_LIMIT;
@@ -48,11 +51,11 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	private Sort sort;
 
 	public OffsetPageRequest() {
-		this.limit = DEFAULT_LIMIT;
+		this(DEFAULT_LIMIT, 0, Sort.unsorted());
 	}
 
 	public OffsetPageRequest(int limit, long offset) {
-		this(limit, offset, null);
+		this(limit, offset, Sort.unsorted());
 	}
 
 	public OffsetPageRequest(int limit, long offset, Sort sort) {
@@ -141,7 +144,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public Sort getSort() {
-		return sort != null ? sort : Sort.unsorted();
+		return sort;
 	}
 
 	/**
@@ -218,7 +221,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	private Sort parseSort(List<String> sorts) {
 		final List<Order> orders = parseOrders(sorts);
-		return orders.isEmpty() ? null : Sort.by(orders);
+		return Sort.by(orders);
 	}
 
 	private void check(int limit) {
