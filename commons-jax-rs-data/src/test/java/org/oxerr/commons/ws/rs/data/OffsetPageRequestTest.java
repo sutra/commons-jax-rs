@@ -3,7 +3,6 @@ package org.oxerr.commons.ws.rs.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -52,27 +51,49 @@ class OffsetPageRequestTest {
 
 	@Test
 	void testParseSort() {
-		OffsetPageRequest opr = new OffsetPageRequest();
-		List<String> sorts = Arrays.asList(
-			null,
-			"",
-			"field1",
-			"field2,",
-			"field3, ",
-			"field4,desc",
-			"field5,field6"
-		);
-		opr.setSort(sorts);
+		OffsetPageRequest r = new OffsetPageRequest();
 
-		Sort expected = Sort.by(
-			Order.asc("field1"),
-			Order.asc("field2"),
-			Order.asc("field3"),
-			Order.desc("field4"),
-			Order.asc("field5"),
-			Order.asc("field6")
-		);
-		assertEquals(expected, opr.getSort());
+		r.setSort(Arrays.asList((String) null));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(""));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(","));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(", "));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(" ,"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(" , "));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("field1"));
+		assertEquals(Sort.by(Order.asc("field1")), r.getSort());
+
+		r.setSort(Arrays.asList("field2,"));
+		assertEquals(Sort.by(Order.asc("field2")), r.getSort());
+
+		r.setSort(Arrays.asList("field3, "));
+		assertEquals(Sort.by(Order.asc("field3")), r.getSort());
+
+		r.setSort(Arrays.asList("field4,desc"));
+		assertEquals(Sort.by(Order.desc("field4")), r.getSort());
+
+		r.setSort(Arrays.asList("field5,field6"));
+		assertEquals(Sort.by(Order.asc("field5"), Order.asc("field6")), r.getSort());
+
+		r.setSort(Arrays.asList("asc"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("desc"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("asc,desc"));
+		assertEquals(Sort.by(Order.desc("asc")), r.getSort());
 	}
 
 }

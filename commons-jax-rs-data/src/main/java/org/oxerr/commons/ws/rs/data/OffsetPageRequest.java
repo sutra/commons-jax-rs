@@ -3,6 +3,7 @@ package org.oxerr.commons.ws.rs.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -198,21 +199,21 @@ public class OffsetPageRequest implements Pageable, Serializable {
 			}
 
 			final String[] elements = part.split(delimiter);
-			final Direction direction = elements.length == 0 ? null : Direction.fromOptionalString(elements[elements.length - 1]).orElse(null);
+			final Optional<Direction> direction = elements.length == 0
+				? Optional.empty()
+				: Direction.fromOptionalString(elements[elements.length - 1]);
 
 			for (int i = 0; i < elements.length; i++) {
 
-				if (i == elements.length - 1 && direction != null) {
+				if (i == elements.length - 1 && direction.isPresent()) {
 					continue;
 				}
 
 				final String property = elements[i];
 
-				if (!StringUtils.hasText(property)) {
-					continue;
+				if (StringUtils.hasText(property)) {
+					allOrders.add(new Order(direction.orElse(null), property));
 				}
-
-				allOrders.add(new Order(direction, property));
 			}
 		}
 
