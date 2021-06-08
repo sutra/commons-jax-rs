@@ -3,6 +3,7 @@ package org.oxerr.commons.ws.rs.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -32,21 +33,30 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	private static final long serialVersionUID = 2017071101L;
 
-	private static final int MAX_LIMIT = 500;
+	private static final int DEFAULT_MAX_LIMIT = 500;
+
 	private static final int DEFAULT_LIMIT = 10;
+
 	private static final String DEFAULT_LIMIT_STRING = "10";
+
 	private static final String DEFAULT_PROPERTY_DELIMITER = ",";
 
+	private int maxLimit = DEFAULT_MAX_LIMIT;
+
+	private String propertyDelimiter = DEFAULT_PROPERTY_DELIMITER;
+
 	private int limit;
+
 	private long offset;
+
 	private Sort sort;
 
 	public OffsetPageRequest() {
-		this.limit = DEFAULT_LIMIT;
+		this(DEFAULT_LIMIT, 0, Sort.unsorted());
 	}
 
 	public OffsetPageRequest(int limit, long offset) {
-		this(limit, offset, null);
+		this(limit, offset, Sort.unsorted());
 	}
 
 	public OffsetPageRequest(int limit, long offset, Sort sort) {
@@ -59,9 +69,9 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	public OffsetPageRequest defaultSort(Direction direction, String... properties) {
 		final OffsetPageRequest ret;
-		final Sort sort = getSort();
+		final Sort s = getSort();
 
-		if (sort != null && sort.iterator().hasNext()) {
+		if (s != null && s.iterator().hasNext()) {
 			ret = this;
 		} else {
 			ret = new OffsetPageRequest(getPageSize(), getOffset(), Sort.by(direction, properties));
@@ -135,7 +145,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@Override
 	public Sort getSort() {
-		return sort != null ? sort : Sort.unsorted();
+		return sort;
 	}
 
 	/**
@@ -170,8 +180,28 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		return offset > 0;
 	}
 
-	private static List<Order> parseOrders(List<String> source) {
-		final List<Order> allOrders = new ArrayList<Sort.Order>();
+	protected int getMaxLimit() {
+		return this.maxLimit;
+	}
+
+	protected String getPropertyDelimiter() {
+		return this.propertyDelimiter;
+	}
+
+	protected String filterProperty(String property) {
+		if (property == null) {
+			return null;
+		}
+		return StringUtils.replace(property, "'", "''");
+	}
+
+	protected Optional<Direction> parseDirection(String value) {
+		return Direction.fromOptionalString(value);
+	}
+
+	protected List<Order> parseOrders(List<String> source) {
+		final String delimiter = this.getPropertyDelimiter();
+		final List<Order> allOrders = new ArrayList<>();
 
 		for (final String part : source) {
 
@@ -179,35 +209,35 @@ public class OffsetPageRequest implements Pageable, Serializable {
 				continue;
 			}
 
-			final String[] elements = part.split(DEFAULT_PROPERTY_DELIMITER);
-			final Direction direction = elements.length == 0 ? null : Direction.fromOptionalString(elements[elements.length - 1]).orElse(null);
+			final String[] elements = part.split(delimiter);
+			final Optional<Direction> direction = elements.length == 0
+				? Optional.empty()
+				: this.parseDirection(elements[elements.length - 1]);
 
 			for (int i = 0; i < elements.length; i++) {
 
-				if (i == elements.length - 1 && direction != null) {
+				if (i == elements.length - 1 && direction.isPresent()) {
 					continue;
 				}
 
-				final String property = elements[i];
+				final String property = this.filterProperty(elements[i]);
 
-				if (!StringUtils.hasText(property)) {
-					continue;
+				if (StringUtils.hasText(property)) {
+					allOrders.add(new Order(direction.orElse(null), property));
 				}
-
-				allOrders.add(new Order(direction, property));
 			}
 		}
 
 		return allOrders;
 	}
 
-	private static Sort parseSort(List<String> sorts) {
+	protected Sort parseSort(List<String> sorts) {
 		final List<Order> orders = parseOrders(sorts);
-		return orders.isEmpty() ? null : Sort.by(orders);
+		return Sort.by(orders);
 	}
 
 	private void check(int limit) {
-		if (limit > MAX_LIMIT) {
+		if (limit > this.getMaxLimit()) {
 			throw new IllegalArgumentException("Limit is exceeded.");
 		}
 	}
@@ -224,23 +254,35 @@ public class OffsetPageRequest implements Pageable, Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		OffsetPageRequest other = (OffsetPageRequest) obj;
-		if (limit != other.limit)
+		if (limit != other.limit) {
 			return false;
-		if (offset != other.offset)
+		}
+		if (offset != other.offset) {
 			return false;
+		}
 		if (sort == null) {
-			if (other.sort != null)
+			if (other.sort != null) {
 				return false;
-		} else if (!sort.equals(other.sort))
+			}
+		} else if (!sort.equals(other.sort)) {
 			return false;
+		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Page request [number: %d, size %d, sort: %s]", getPageNumber(), getPageSize(), sort);
 	}
 
 }

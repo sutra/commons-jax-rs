@@ -2,11 +2,15 @@ package org.oxerr.commons.ws.rs.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 class OffsetPageRequestTest {
 
@@ -38,6 +42,75 @@ class OffsetPageRequestTest {
 		assertEquals(1L, opr.getOffset());
 		Pageable p = opr.defaultSort(Direction.DESC, "createdDate");
 		assertEquals(1L, p.getOffset());
+	}
+
+	@Test
+	void testUnsort() {
+		OffsetPageRequest opr = new OffsetPageRequest();
+		assertEquals(Sort.unsorted(), opr.getSort());
+	}
+
+	@Test
+	void testFilterProperty() {
+		OffsetPageRequest r = new OffsetPageRequest();
+		r.setSort(Arrays.asList("the'field"));
+		assertEquals(Sort.by(Order.asc("the''field")), r.getSort());
+	}
+
+	@Test
+	void testParseDirection() {
+		OffsetPageRequest r = new OffsetPageRequest();
+		assertEquals(Optional.empty(), r.parseDirection(null));
+		assertEquals(Optional.of(Direction.ASC), r.parseDirection("asc"));
+		assertEquals(Optional.of(Direction.DESC), r.parseDirection("desc"));
+		assertEquals(Optional.empty(), r.parseDirection("unknown"));
+	}
+
+	@Test
+	void testParseSort() {
+		OffsetPageRequest r = new OffsetPageRequest();
+
+		r.setSort(Arrays.asList((String) null));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(""));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(","));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(", "));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(" ,"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList(" , "));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("field1"));
+		assertEquals(Sort.by(Order.asc("field1")), r.getSort());
+
+		r.setSort(Arrays.asList("field2,"));
+		assertEquals(Sort.by(Order.asc("field2")), r.getSort());
+
+		r.setSort(Arrays.asList("field3, "));
+		assertEquals(Sort.by(Order.asc("field3")), r.getSort());
+
+		r.setSort(Arrays.asList("field4,desc"));
+		assertEquals(Sort.by(Order.desc("field4")), r.getSort());
+
+		r.setSort(Arrays.asList("field5,field6"));
+		assertEquals(Sort.by(Order.asc("field5"), Order.asc("field6")), r.getSort());
+
+		r.setSort(Arrays.asList("asc"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("desc"));
+		assertEquals(Sort.unsorted(), r.getSort());
+
+		r.setSort(Arrays.asList("asc,desc"));
+		assertEquals(Sort.by(Order.desc("asc")), r.getSort());
 	}
 
 }
