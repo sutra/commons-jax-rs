@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 
 class OffsetPageRequestTest {
+
+	@Test
+	void testOffsetPageRequestIntLongSort() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new OffsetPageRequest(1, 0, null));
+	}
 
 	@Test
 	void testGetSort() {
@@ -38,7 +44,7 @@ class OffsetPageRequestTest {
 
 	@Test
 	void defaultSort() {
-		OffsetPageRequest opr = new OffsetPageRequest(5, 1, null);
+		OffsetPageRequest opr = new OffsetPageRequest(5, 1, Sort.unsorted());
 		assertEquals(1L, opr.getOffset());
 		Pageable p = opr.defaultSort(Direction.DESC, "createdDate");
 		assertEquals(1L, p.getOffset());

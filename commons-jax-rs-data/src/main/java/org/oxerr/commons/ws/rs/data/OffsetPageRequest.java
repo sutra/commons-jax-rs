@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -60,6 +61,8 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	}
 
 	public OffsetPageRequest(int limit, long offset, Sort sort) {
+		Assert.notNull(sort, "Sort must not be null!");
+
 		this.check(limit);
 
 		this.limit = limit;
@@ -71,7 +74,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		final OffsetPageRequest ret;
 		final Sort s = getSort();
 
-		if (s != null && s.iterator().hasNext()) {
+		if (s.isSorted()) {
 			ret = this;
 		} else {
 			ret = new OffsetPageRequest(getPageSize(), getOffset(), Sort.by(direction, properties));
