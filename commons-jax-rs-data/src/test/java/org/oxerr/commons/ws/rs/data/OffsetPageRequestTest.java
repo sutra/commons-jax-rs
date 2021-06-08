@@ -3,6 +3,7 @@ package org.oxerr.commons.ws.rs.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +48,22 @@ class OffsetPageRequestTest {
 	void testUnsort() {
 		OffsetPageRequest opr = new OffsetPageRequest();
 		assertEquals(Sort.unsorted(), opr.getSort());
+	}
+
+	@Test
+	void testFilterProperty() {
+		OffsetPageRequest r = new OffsetPageRequest();
+		r.setSort(Arrays.asList("the'field"));
+		assertEquals(Sort.by(Order.asc("the''field")), r.getSort());
+	}
+
+	@Test
+	void testParseDirection() {
+		OffsetPageRequest r = new OffsetPageRequest();
+		assertEquals(Optional.empty(), r.parseDirection(null));
+		assertEquals(Optional.of(Direction.ASC), r.parseDirection("asc"));
+		assertEquals(Optional.of(Direction.DESC), r.parseDirection("desc"));
+		assertEquals(Optional.empty(), r.parseDirection("unknown"));
 	}
 
 	@Test

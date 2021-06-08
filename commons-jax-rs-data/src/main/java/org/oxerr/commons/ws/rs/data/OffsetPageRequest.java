@@ -188,7 +188,18 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		return this.propertyDelimiter;
 	}
 
-	private List<Order> parseOrders(List<String> source) {
+	protected String filterProperty(String property) {
+		if (property == null) {
+			return null;
+		}
+		return StringUtils.replace(property, "'", "''");
+	}
+
+	protected Optional<Direction> parseDirection(String value) {
+		return Direction.fromOptionalString(value);
+	}
+
+	protected List<Order> parseOrders(List<String> source) {
 		final String delimiter = this.getPropertyDelimiter();
 		final List<Order> allOrders = new ArrayList<>();
 
@@ -201,7 +212,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 			final String[] elements = part.split(delimiter);
 			final Optional<Direction> direction = elements.length == 0
 				? Optional.empty()
-				: Direction.fromOptionalString(elements[elements.length - 1]);
+				: this.parseDirection(elements[elements.length - 1]);
 
 			for (int i = 0; i < elements.length; i++) {
 
@@ -209,7 +220,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 					continue;
 				}
 
-				final String property = elements[i];
+				final String property = this.filterProperty(elements[i]);
 
 				if (StringUtils.hasText(property)) {
 					allOrders.add(new Order(direction.orElse(null), property));
@@ -220,7 +231,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		return allOrders;
 	}
 
-	private Sort parseSort(List<String> sorts) {
+	protected Sort parseSort(List<String> sorts) {
 		final List<Order> orders = parseOrders(sorts);
 		return Sort.by(orders);
 	}
@@ -267,6 +278,11 @@ public class OffsetPageRequest implements Pageable, Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Page request [number: %d, size %d, sort: %s]", getPageNumber(), getPageSize(), sort);
 	}
 
 }
