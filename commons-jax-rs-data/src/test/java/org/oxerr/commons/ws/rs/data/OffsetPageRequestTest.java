@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,23 @@ class OffsetPageRequestTest {
 		OffsetPageRequest p = new OffsetPageRequest();
 		p.setOffset(1);
 		assertEquals(1, p.getOffset());
+	}
+
+	@Test
+	void testSetSort() {
+		OffsetPageRequest p = new OffsetPageRequest();
+
+		p.setSort(Collections.emptyList());
+		assertEquals(Sort.unsorted(), p.getSort());
+
+		p.setSort(Arrays.asList(""));
+		assertEquals(Sort.unsorted(), p.getSort());
+
+		p.setSort(Arrays.asList("f1"));
+		assertEquals(Sort.by(Direction.ASC, "f1"), p.getSort());
+
+		p.setSort(Arrays.asList("f1,desc"));
+		assertEquals(Sort.by(Direction.DESC, "f1"), p.getSort());
 	}
 
 	@Test
@@ -240,6 +258,12 @@ class OffsetPageRequestTest {
 
 		r.setSort(Arrays.asList("asc,desc"));
 		assertEquals(Sort.by(Order.desc("asc")), r.getSort());
+	}
+
+	@Test
+	void testHashCode() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		assertEquals(p.hashCode(), OffsetPageRequest.of().hashCode());
 	}
 
 	@Test

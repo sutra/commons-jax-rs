@@ -263,7 +263,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		int result = 1;
 		result = prime * result + limit;
 		result = prime * result + Long.hashCode(offset);
-		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		result = prime * result + sort.hashCode();
 		return result;
 	}
 
