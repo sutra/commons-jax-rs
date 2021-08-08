@@ -155,7 +155,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable next() {
+	public OffsetPageRequest next() {
 		return new OffsetPageRequest(limit, offset + limit, sort);
 	}
 
@@ -163,7 +163,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable previousOrFirst() {
+	public OffsetPageRequest previousOrFirst() {
 		return new OffsetPageRequest(limit, offset - limit, sort);
 	}
 
@@ -171,7 +171,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable first() {
+	public OffsetPageRequest first() {
 		return new OffsetPageRequest(limit, 0, sort);
 	}
 
@@ -179,7 +179,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable withPage(int pageNumber) {
+	public OffsetPageRequest withPage(int pageNumber) {
 		return new OffsetPageRequest(this.limit, (long) this.limit * (long) pageNumber, getSort());
 	}
 
