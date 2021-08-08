@@ -206,9 +206,6 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	}
 
 	protected String filterProperty(String property) {
-		if (property == null) {
-			return null;
-		}
 		return StringUtils.replace(property, "'", "''");
 	}
 
