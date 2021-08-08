@@ -61,6 +61,7 @@ class OffsetPageRequestTest {
 	@Test
 	void testSetSort() {
 		OffsetPageRequest p = new OffsetPageRequest();
+		assertThrows(IllegalArgumentException.class, () -> p.setSort(null));
 
 		p.setSort(Collections.emptyList());
 		assertEquals(Sort.unsorted(), p.getSort());

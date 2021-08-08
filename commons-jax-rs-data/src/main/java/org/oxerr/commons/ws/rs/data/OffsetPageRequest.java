@@ -116,6 +116,8 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@QueryParam("sort[]")
 	public void setSort(List<String> sorts) {
+		Assert.notNull(sorts, "Sorts must not be null!");
+
 		sort = parseSort(sorts);
 	}
 
