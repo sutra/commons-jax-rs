@@ -43,6 +43,35 @@ class OffsetPageRequestTest {
 	}
 
 	@Test
+	void testWithPage() {
+		Pageable p = new OffsetPageRequest();
+		assertEquals(0, p.getPageNumber());
+		assertEquals(10, p.getPageSize());
+		assertEquals(0, p.getOffset());
+
+		Pageable p0 = p.withPage(0);
+		assertEquals(0, p0.getPageNumber());
+		assertEquals(10, p0.getPageSize());
+		assertEquals(0, p0.getOffset());
+
+		Pageable p1 = p0.withPage(1);
+
+		assertEquals(p.withPage(1), p1);
+
+		assertEquals(1, p1.getPageNumber());
+		assertEquals(10, p1.getPageSize());
+		assertEquals(10, p1.getOffset());
+
+		Pageable p2 = p1.withPage(2);
+
+		assertEquals(p.withPage(2), p2);
+
+		assertEquals(2, p2.getPageNumber());
+		assertEquals(10, p2.getPageSize());
+		assertEquals(20, p2.getOffset());
+	}
+
+	@Test
 	void defaultSort() {
 		OffsetPageRequest opr = new OffsetPageRequest(5, 1, Sort.unsorted());
 		assertEquals(1L, opr.getOffset());

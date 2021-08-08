@@ -179,6 +179,14 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Pageable withPage(int pageNumber) {
+		return new OffsetPageRequest(this.limit, (long) this.limit * (long) pageNumber, getSort());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean hasPrevious() {
 		return offset > 0;
 	}
