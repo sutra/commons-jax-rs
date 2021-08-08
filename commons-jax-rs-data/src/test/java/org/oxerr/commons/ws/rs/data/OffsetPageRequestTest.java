@@ -42,6 +42,7 @@ class OffsetPageRequestTest {
 	void testSetLimit() {
 		OffsetPageRequest p = new OffsetPageRequest();
 		p.setLimit(p.getMaxLimit());
+		assertEquals(p.getMaxLimit(), p.getPageSize());
 
 		int exceededLimit = p.getMaxLimit() + 1;
 		assertThrows(IllegalArgumentException.class, () -> p.setLimit(exceededLimit));
@@ -52,6 +53,37 @@ class OffsetPageRequestTest {
 		OffsetPageRequest p = new OffsetPageRequest();
 		p.setOffset(1);
 		assertEquals(1, p.getOffset());
+	}
+
+	@Test
+	void testGetPageNumber() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		assertEquals(10, p.getPageSize());
+		assertEquals(0, p.getPageNumber());
+
+		p.setOffset(9);
+		assertEquals(0, p.getPageNumber());
+
+		p.setOffset(10);
+		assertEquals(1, p.getPageNumber());
+
+		p.setOffset(11);
+		assertEquals(1, p.getPageNumber());
+
+		p.setOffset(19);
+		assertEquals(1, p.getPageNumber());
+
+		p.setOffset(20);
+		assertEquals(2, p.getPageNumber());
+
+		p.setOffset(21);
+		assertEquals(2, p.getPageNumber());
+
+		p.setLimit(0);
+		assertEquals(0, p.getPageNumber());
+
+		p.setLimit(-1);
+		assertEquals(0, p.getPageNumber());
 	}
 
 	@Test
@@ -78,9 +110,12 @@ class OffsetPageRequestTest {
 
 	@Test
 	void testPreviousOrFirst() {
-		Pageable p = new OffsetPageRequest();
+		OffsetPageRequest p = new OffsetPageRequest();
 		assertEquals(p, p.previousOrFirst());
 
+		assertEquals(p, p.next().previousOrFirst());
+
+		p.setOffset(10);
 		assertEquals(p, p.next().previousOrFirst());
 	}
 
