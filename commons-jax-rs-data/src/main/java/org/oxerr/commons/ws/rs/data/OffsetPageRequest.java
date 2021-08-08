@@ -159,12 +159,16 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		return new OffsetPageRequest(limit, offset + limit, sort);
 	}
 
+	public OffsetPageRequest previous() {
+		return getOffset() == 0 ? this : new OffsetPageRequest(limit, getOffset() - limit, getSort());
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public OffsetPageRequest previousOrFirst() {
-		return new OffsetPageRequest(limit, offset - limit, sort);
+		return hasPrevious() ? previous() : first();
 	}
 
 	/**

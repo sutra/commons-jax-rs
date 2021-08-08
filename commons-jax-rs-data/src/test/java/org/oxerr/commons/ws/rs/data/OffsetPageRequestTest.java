@@ -43,6 +43,18 @@ class OffsetPageRequestTest {
 	}
 
 	@Test
+	void testPreviousOrFirst() {
+		Pageable p = new OffsetPageRequest();
+		assertEquals(p, p.previousOrFirst());
+	}
+
+	@Test
+	void testFirst() {
+		Pageable p = new OffsetPageRequest();
+		assertEquals(p, p.first());
+	}
+
+	@Test
 	void testWithPage() {
 		Pageable p = new OffsetPageRequest();
 		assertEquals(0, p.getPageNumber());
