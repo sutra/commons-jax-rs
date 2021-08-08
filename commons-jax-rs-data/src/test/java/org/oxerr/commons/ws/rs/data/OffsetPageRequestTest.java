@@ -1,7 +1,9 @@
 package org.oxerr.commons.ws.rs.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -264,6 +266,18 @@ class OffsetPageRequestTest {
 	void testHashCode() {
 		OffsetPageRequest p = new OffsetPageRequest();
 		assertEquals(p.hashCode(), OffsetPageRequest.of().hashCode());
+	}
+
+	@Test
+	void testEquals() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		assertTrue(() -> p.equals(p));
+		assertFalse(() -> p.equals(null));
+		assertFalse(() -> p.equals(new Object()));
+		assertFalse(() -> p.equals(new OffsetPageRequest(11, 0)));
+		assertFalse(() -> p.equals(new OffsetPageRequest(10, 1)));
+		assertFalse(() -> p.equals(new OffsetPageRequest().defaultSort(Direction.DESC, "f1")));
+		assertTrue(() -> p.equals(new OffsetPageRequest()));
 	}
 
 	@Test

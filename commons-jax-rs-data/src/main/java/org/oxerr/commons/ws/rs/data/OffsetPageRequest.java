@@ -285,14 +285,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		if (offset != other.offset) {
 			return false;
 		}
-		if (sort == null) {
-			if (other.sort != null) {
-				return false;
-			}
-		} else if (!sort.equals(other.sort)) {
-			return false;
-		}
-		return true;
+		return sort.equals(other.sort);
 	}
 
 	@Override
