@@ -1,11 +1,11 @@
 package org.oxerr.commons.ws.rs.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,41 @@ class OffsetPageRequestTest {
 
 	@Test
 	void testOffsetPageRequestIntLongSort() {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> new OffsetPageRequest(1, 0, null));
+		assertThrows(IllegalArgumentException.class, () -> new OffsetPageRequest(1, 0, null));
+	}
+
+	@Test
+	void testOf() {
+		OffsetPageRequest p = new OffsetPageRequest();
+
+		assertEquals(p, OffsetPageRequest.of());
+		assertEquals(p, OffsetPageRequest.of(10, 0));
+		assertEquals(p, OffsetPageRequest.of(10, 0, Sort.unsorted()));
+	}
+
+	@Test
+	void testDefaultSort() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		OffsetPageRequest p0 = p.defaultSort(Direction.DESC, "f1");
+
+		assertEquals(Sort.by(Direction.DESC, "f1"), p0.getSort());
+		assertEquals(Sort.by(Direction.DESC, "f1"), p0.defaultSort(Direction.ASC, "f2").getSort());
+	}
+
+	@Test
+	void testSetLimit() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		p.setLimit(p.getMaxLimit());
+
+		int exceededLimit = p.getMaxLimit() + 1;
+		assertThrows(IllegalArgumentException.class, () -> p.setLimit(exceededLimit));
+	}
+
+	@Test
+	void testSetOffset() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		p.setOffset(1);
+		assertEquals(1, p.getOffset());
 	}
 
 	@Test
@@ -46,6 +80,8 @@ class OffsetPageRequestTest {
 	void testPreviousOrFirst() {
 		Pageable p = new OffsetPageRequest();
 		assertEquals(p, p.previousOrFirst());
+
+		assertEquals(p, p.next().previousOrFirst());
 	}
 
 	@Test
@@ -158,6 +194,12 @@ class OffsetPageRequestTest {
 
 		r.setSort(Arrays.asList("asc,desc"));
 		assertEquals(Sort.by(Order.desc("asc")), r.getSort());
+	}
+
+	@Test
+	void testToString() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		assertEquals("Page request [number: 0, size 10, sort: UNSORTED]", p.toString());
 	}
 
 }
