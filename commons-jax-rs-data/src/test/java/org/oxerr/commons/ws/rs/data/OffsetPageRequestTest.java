@@ -109,6 +109,17 @@ class OffsetPageRequestTest {
 	}
 
 	@Test
+	void testPrevious() {
+		OffsetPageRequest p = new OffsetPageRequest();
+		assertEquals(p, p.previous());
+
+		assertEquals(p, p.next().previous());
+
+		p.setOffset(10);
+		assertEquals(p, p.next().previous());
+	}
+
+	@Test
 	void testPreviousOrFirst() {
 		OffsetPageRequest p = new OffsetPageRequest();
 		assertEquals(p, p.previousOrFirst());
