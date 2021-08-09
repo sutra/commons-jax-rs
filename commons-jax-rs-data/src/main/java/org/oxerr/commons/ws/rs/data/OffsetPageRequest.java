@@ -116,6 +116,8 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 */
 	@QueryParam("sort[]")
 	public void setSort(List<String> sorts) {
+		Assert.notNull(sorts, "Sorts must not be null!");
+
 		sort = parseSort(sorts);
 	}
 
@@ -155,24 +157,36 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable next() {
+	public OffsetPageRequest next() {
 		return new OffsetPageRequest(limit, offset + limit, sort);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Pageable previousOrFirst() {
-		return new OffsetPageRequest(limit, offset - limit, sort);
+	public OffsetPageRequest previous() {
+		return getOffset() == 0 ? this : new OffsetPageRequest(limit, getOffset() - limit, getSort());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Pageable first() {
+	public OffsetPageRequest previousOrFirst() {
+		return hasPrevious() ? previous() : first();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public OffsetPageRequest first() {
 		return new OffsetPageRequest(limit, 0, sort);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public OffsetPageRequest withPage(int pageNumber) {
+		return new OffsetPageRequest(this.limit, (long) this.limit * (long) pageNumber, getSort());
 	}
 
 	/**
@@ -192,9 +206,6 @@ public class OffsetPageRequest implements Pageable, Serializable {
 	}
 
 	protected String filterProperty(String property) {
-		if (property == null) {
-			return null;
-		}
 		return StringUtils.replace(property, "'", "''");
 	}
 
@@ -251,7 +262,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		int result = 1;
 		result = prime * result + limit;
 		result = prime * result + Long.hashCode(offset);
-		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		result = prime * result + sort.hashCode();
 		return result;
 	}
 
@@ -273,14 +284,7 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		if (offset != other.offset) {
 			return false;
 		}
-		if (sort == null) {
-			if (other.sort != null) {
-				return false;
-			}
-		} else if (!sort.equals(other.sort)) {
-			return false;
-		}
-		return true;
+		return sort.equals(other.sort);
 	}
 
 	@Override

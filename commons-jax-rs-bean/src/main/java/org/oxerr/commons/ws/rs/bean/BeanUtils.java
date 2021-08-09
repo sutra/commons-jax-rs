@@ -26,7 +26,7 @@ public final class BeanUtils {
 		try {
 			NullAwareBeanUtilsBean.getInstance().copyProperties(dest, orig);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
+			throw new IllegalArgumentException(e);
 		}
 
 		return dest;
@@ -94,7 +94,7 @@ public final class BeanUtils {
 				}
 
 				final List<Class<? extends Annotation>> annotationTypes = annotations
-					.stream().map(annotation -> annotation.annotationType())
+					.stream().map(Annotation::annotationType)
 					.collect(Collectors.toList());
 				annotationTypes.retainAll(excludedAnnotationTypes);
 
