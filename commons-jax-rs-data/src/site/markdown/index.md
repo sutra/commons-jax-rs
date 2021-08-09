@@ -73,7 +73,7 @@ curl 'http://localhost:8080/posts?limit=10&offset=0&sort=field1%20asc&sort=field
 Extends and override the relevant methods to change the default behavior, for example:
 
 ```java
-javax.ws.rs.QueryParam;
+import javax.ws.rs.QueryParam;
 
 import org.oxerr.commons.ws.rs.data.OffsetPageRequest;
 
