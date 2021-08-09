@@ -44,7 +44,6 @@ curl 'http://localhost:8080/posts?limit=10&offset=0&sort%5B%5D=field1,asc&sort%5
 ### How to use in Spring @RestController
 
 ```java
-import org.oxerr.commons.ws.rs.data.OffsetPageRequest
 import org.springframework.data.domain.Page;;
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,9 +57,24 @@ public PostController {
 	@GetMapping
 	public Page<Post> getPosts(@
 		@RequestParam(value = "q", required = false) String q,
-		OffsetPageRequest pageable
+		SpaceDelimitedOffsetPageRequest pageable
 	) {
 		...
+	}
+
+}
+```
+
+### How to change the delimiter in the sort string between the property and the sort direction
+
+```java
+import org.oxerr.commons.ws.rs.data.OffsetPageRequest;
+
+public class SpaceDelimitedOffsetPageRequest extends OffsetPageRequest {
+
+	@Override
+	protected String getPropertyDelimiter() {
+		return " ";
 	}
 
 }
