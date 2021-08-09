@@ -55,10 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
 public PostController {
 
 	@GetMapping
-	public Page<Post> getPosts(@
-		@RequestParam(value = "q", required = false) String q,
-		SpaceDelimitedOffsetPageRequest pageable
-	) {
+	public Page<Post> getPosts(@RequestParam(value = "q", required = false) String q, SpaceDelimitedOffsetPageRequest pageable) {
 		...
 	}
 
