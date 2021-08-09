@@ -56,23 +56,52 @@ public PostController {
 
 	@GetMapping
 	public Page<Post> getPosts(@RequestParam(value = "q", required = false) String q, SpaceDelimitedOffsetPageRequest pageable) {
-		...
+		// ...
 	}
 
 }
 ```
 
-### How to change the delimiter in the sort string between the property and the sort direction
+and the client side could pass the parameters as follows:
+
+```shell
+curl 'http://localhost:8080/posts?limit=10&offset=0&sort=field1%20asc&sort=field2%20desc'
+```
+
+### How to change the default behavior
+
+Extends and override the relevant methods to change the default behavior, for example:
 
 ```java
+javax.ws.rs.QueryParam;
+
 import org.oxerr.commons.ws.rs.data.OffsetPageRequest;
 
 public class SpaceDelimitedOffsetPageRequest extends OffsetPageRequest {
 
+	/**
+	 * Change the soring paramter name.
+	 */
+	@Override
+	@QueryParam("sort")
+	public void setSort(List<String> sorts) {
+		super.setSort(sorts);
+	}
+
+	/**
+	 * Change the delimiter in the sort string between the property and the sort direction.
+	 */
 	@Override
 	protected String getPropertyDelimiter() {
 		return " ";
 	}
+
+	@Override
+	protected int getMaxLimit() {
+		return 1000;
+	}
+
+	// ...
 
 }
 ```
