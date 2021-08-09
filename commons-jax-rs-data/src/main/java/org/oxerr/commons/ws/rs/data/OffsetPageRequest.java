@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -213,16 +214,14 @@ public class OffsetPageRequest implements Pageable, Serializable {
 		return Direction.fromOptionalString(value);
 	}
 
-	protected List<Order> parseOrders(List<String> source) {
+	protected List<Order> parseOrders(final List<String> source) {
+		final List<String> parts = source.stream()
+			.filter(java.util.Objects::nonNull)
+			.collect(Collectors.toList());
 		final String delimiter = this.getPropertyDelimiter();
 		final List<Order> allOrders = new ArrayList<>();
 
-		for (final String part : source) {
-
-			if (part == null) {
-				continue;
-			}
-
+		for (final String part : parts) {
 			final String[] elements = part.split(delimiter);
 			final Optional<Direction> direction = elements.length == 0
 				? Optional.empty()
