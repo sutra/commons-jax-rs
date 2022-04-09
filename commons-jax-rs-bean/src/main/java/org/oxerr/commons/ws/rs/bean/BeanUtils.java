@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.InvalidPropertyException;
 
 public final class BeanUtils {
 
@@ -91,6 +92,7 @@ public final class BeanUtils {
 					Field field = dest.getClass().getDeclaredField(pd.getName());
 					annotations.addAll(Arrays.asList(field.getAnnotations()));
 				} catch (NoSuchFieldException | SecurityException e) {
+					// ignore
 				}
 
 				final List<Class<? extends Annotation>> annotationTypes = annotations
@@ -99,15 +101,46 @@ public final class BeanUtils {
 				annotationTypes.retainAll(excludedAnnotationTypes);
 
 				if (annotationTypes.isEmpty()) {
-					final Object value = origBeanWrapper.getPropertyValue(pd.getName());
-					if (value != null) {
-						destBeanWrapper.setPropertyValue(pd.getName(), value);
-					}
+					setPropertyValue(destBeanWrapper, origBeanWrapper, pd);
 				}
 			}
 		}
 
 		return dest;
+	}
+
+	private static void setPropertyValue(
+		final BeanWrapper destBeanWrapper,
+		final BeanWrapper origBeanWrapper,
+		final PropertyDescriptor pd
+	) {
+		try {
+			final Object value = origBeanWrapper.getPropertyValue(pd.getName());
+			if (value != null) {
+				destBeanWrapper.setPropertyValue(pd.getName(), value);
+			}
+		} catch (InvalidPropertyException e) {
+			if (!isCausedByIgnorableException(e)) {
+				throw e;
+			}
+		}
+	}
+
+	private static boolean isCausedByIgnorableException(InvalidPropertyException e) {
+		if (!(e.getCause() instanceof InvocationTargetException)) {
+			return false;
+		}
+
+		final Throwable cause = e.getCause().getCause();
+		if (cause instanceof NoSuchFieldException) {
+			return true;
+		}
+
+		if (cause instanceof SecurityException) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
