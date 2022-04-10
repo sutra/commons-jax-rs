@@ -132,11 +132,12 @@ public final class BeanUtils {
 		}
 
 		final Throwable cause = e.getCause().getCause();
-		if (cause instanceof NoSuchFieldException) {
-			return true;
-		}
 
-		if (cause instanceof SecurityException) {
+		if (cause == null) {
+			return false;
+		} else if (cause instanceof NoSuchFieldException) {
+			return true;
+		} else if (cause instanceof SecurityException) {
 			return true;
 		}
 

@@ -10,6 +10,8 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.cxf.jaxrs.provider.JavaTimeTypesParamConverterProvider;
+
 /**
  * {@code ParamConverterProvider} for converting between a {@code String} and
  * {@link OffsetDateTime}.
@@ -21,7 +23,7 @@ import javax.ws.rs.ext.Provider;
 @Deprecated
 public class OffsetDateTimeProvider implements ParamConverterProvider {
 
-	private final ZoneOffset offset;
+	private final JavaTimeTypesParamConverterProvider javaTimeTypesParamConverterProvider = new JavaTimeTypesParamConverterProvider();
 
 	/**
 	 * @since 2.3.1
@@ -31,7 +33,6 @@ public class OffsetDateTimeProvider implements ParamConverterProvider {
 	}
 
 	public OffsetDateTimeProvider(ZoneOffset offset) {
-		this.offset = offset;
 	}
 
 	/**
@@ -40,18 +41,7 @@ public class OffsetDateTimeProvider implements ParamConverterProvider {
 	@Override
 	public <T> ParamConverter<T> getConverter(Class<T> rawType,
 			Type genericType, Annotation[] annotations) {
-		return (rawType != OffsetDateTime.class) ? null : new ParamConverter<T>() {
-
-			@Override
-			public T fromString(final String value) {
-				return rawType.cast(InstantProvider.fromString(value).atOffset(offset));
-			}
-
-			@Override
-			public String toString(final T value) throws IllegalArgumentException {
-				return InstantProvider.<T>toString(value);
-			}
-		};
+		return javaTimeTypesParamConverterProvider.getConverter(rawType, genericType, annotations);
 	}
 
 }
