@@ -241,17 +241,20 @@ class OffsetPageRequestTest {
 		r.setSort(Arrays.asList("field1"));
 		assertEquals(Sort.by(Order.asc("field1")), r.getSort());
 
-		r.setSort(Arrays.asList("field2,"));
-		assertEquals(Sort.by(Order.asc("field2")), r.getSort());
+		r.setSort(Arrays.asList("field1,"));
+		assertEquals(Sort.by(Order.asc("field1")), r.getSort());
 
-		r.setSort(Arrays.asList("field3, "));
-		assertEquals(Sort.by(Order.asc("field3")), r.getSort());
+		r.setSort(Arrays.asList("field1, "));
+		assertEquals(Sort.by(Order.asc("field1")), r.getSort());
 
-		r.setSort(Arrays.asList("field4,desc"));
-		assertEquals(Sort.by(Order.desc("field4")), r.getSort());
+		r.setSort(Arrays.asList("field1,desc"));
+		assertEquals(Sort.by(Order.desc("field1")), r.getSort());
 
-		r.setSort(Arrays.asList("field5,field6"));
-		assertEquals(Sort.by(Order.asc("field5"), Order.asc("field6")), r.getSort());
+		r.setSort(Arrays.asList("field1,field2"));
+		assertEquals(Sort.by(Order.asc("field1"), Order.asc("field2")), r.getSort());
+
+		r.setSort(Arrays.asList("field1,field2,desc"));
+		assertEquals(Sort.by(Order.desc("field1"), Order.desc("field2")), r.getSort());
 
 		r.setSort(Arrays.asList("asc"));
 		assertEquals(Sort.unsorted(), r.getSort());
